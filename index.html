@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Rio Clubhouse — 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="page" id="form-page">
+  <div class="header">
+    <div class="header-label">The Rio Clubhouse · 2026</div>
+    <h1>Register your interest &amp;<br>help shape the property</h1>
+    <p>15–20 partners co-owning a 4+ bedroom property in Zona Sul, Rio de Janeiro — part vacation base, part remote work retreat, part Airbnb investment. Takes about 4 minutes.</p>
+    <p style="margin-top:14px;"><a href="https://canva.link/48i9jyfkf2mwtqe" target="_blank" style="color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:1px;">Read the investment deck &rarr;</a></p>
+  </div>
+  <form id="form" onsubmit="handleSubmit(event)" novalidate>
+    <div class="section-label">About you</div>
+    <div class="q">
+      <div class="q-label">Name &amp; email</div>
+      <div class="two-col">
+        <input type="text" name="name" placeholder="Your name" required>
+        <input type="email" name="email" placeholder="email@example.com" required>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label">Where are you based right now?</div>
+      <input type="text" name="location" placeholder="City, Country">
+    </div>
+    <div class="q">
+      <div class="q-label">How do you work?</div>
+      <div class="options" data-name="work_setup" data-multi="false">
+        <button type="button" class="opt" onclick="pick(this)">Fully remote</button>
+        <button type="button" class="opt" onclick="pick(this)">Hybrid</button>
+        <button type="button" class="opt" onclick="pick(this)">Office-based</button>
+        <button type="button" class="opt" onclick="pick(this)">Self-employed / freelance</button>
+        <button type="button" class="opt" onclick="pick(this)">Business owner</button>
+        <button type="button" class="opt" onclick="pick(this)">Not sure / other</button>
+      </div>
+      <input type="hidden" name="work_setup">
+    </div>
+    <div class="divider"></div>
+    <div class="section-label">Investment</div>
+    <div class="q">
+      <div class="q-label">How much are you thinking of investing?</div>
+      <div class="q-hint">Based on a ~$400K property. No commitment — just gauging the range. Ownership % is approximate and subject to total raise. Private nights/yr uses a conservative 3× multiplier on your ownership share.</div>
+      <div class="inv-bands">
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="10000"><div class="inv-band-left"><span class="inv-band-amount">$10,000</span><span class="inv-band-stake">~2.5% · ~7 private nights/yr</span></div><span class="inv-band-tag">Entry</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="15000"><div class="inv-band-left"><span class="inv-band-amount">$15,000</span><span class="inv-band-stake">~3.75% · ~10 private nights/yr</span></div><span class="inv-band-tag">Entry</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="20000"><div class="inv-band-left"><span class="inv-band-amount">$20,000</span><span class="inv-band-stake">~5% · ~14 private nights/yr</span></div><span class="inv-band-tag">Standard</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="30000"><div class="inv-band-left"><span class="inv-band-amount">$30,000</span><span class="inv-band-stake">~7.5% · ~20 private nights/yr</span></div><span class="inv-band-tag">Standard</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="40000"><div class="inv-band-left"><span class="inv-band-amount">$40,000</span><span class="inv-band-stake">~10% · ~27 private nights/yr</span></div><span class="inv-band-tag">Plus</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="60000"><div class="inv-band-left"><span class="inv-band-amount">$60,000</span><span class="inv-band-stake">~15% · ~41 private nights/yr</span></div><span class="inv-band-tag">Plus</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="80000"><div class="inv-band-left"><span class="inv-band-amount">$80,000</span><span class="inv-band-stake">~20% · ~55 private nights/yr</span></div><span class="inv-band-tag">Anchor</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="100000"><div class="inv-band-left"><span class="inv-band-amount">$100,000</span><span class="inv-band-stake">~25% · ~68 private nights/yr</span></div><span class="inv-band-tag">Anchor</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="unsure"><div class="inv-band-left"><span class="inv-band-amount">Not sure yet</span><span class="inv-band-stake">I want to learn more first</span></div><span class="inv-band-tag"></span></label>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label">We're considering a small modifier based on investment size. Does this feel fair?</div>
+      <div class="q-hint">Idea: investors under $20K get ~10–20% fewer credits; $60K+ investors get a ~10–15% bonus. Larger commitments carry more risk and help close the deal.</div>
+      <div class="options" data-name="tier_fairness" data-multi="false">
+        <button type="button" class="opt" onclick="pick(this)">Yes — fair to reward larger commitment</button>
+        <button type="button" class="opt" onclick="pick(this)">Fine, but keep the difference small</button>
+        <button type="button" class="opt" onclick="pick(this)">No — should be strictly proportional</button>
+        <button type="button" class="opt" onclick="pick(this)">Not sure</button>
+      </div>
+      <input type="hidden" name="tier_fairness">
+    </div>
+    <div class="q">
+      <div class="q-label">What matters most to you?</div>
+      <div class="options" data-name="priority" data-multi="false">
+        <button type="button" class="opt" onclick="pick(this)">Having a base in Rio</button>
+        <button type="button" class="opt" onclick="pick(this)">Financial return</button>
+        <button type="button" class="opt" onclick="pick(this)">Community &amp; shared trips</button>
+        <button type="button" class="opt" onclick="pick(this)">Portfolio diversification</button>
+        <button type="button" class="opt" onclick="pick(this)">All roughly equally</button>
+        <button type="button" class="opt" onclick="pick(this)">Not sure yet</button>
+      </div>
+      <input type="hidden" name="priority">
+    </div>
+    <div class="divider"></div>
+    <div class="section-label">Location</div>
+    <div class="q">
+      <div class="q-label">Which neighbourhood would you want the property in?</div>
+      <div class="q-hint">Click a card to see it on the map. Each area offers a different balance of rental yield, lifestyle, and what $400K actually buys you.</div>
+      <div class="map-wrap"><div id="map"></div></div>
+      <div class="nbhd-cards">
+        <div class="nbhd-card" data-lat="-22.968" data-lng="-43.182" data-img="images/copacabana.jpg" onclick="pickNbhd(this)">
+          <div class="nbhd-photo" style="background-image:url('images/copacabana.jpg')"><div class="nbhd-photo-overlay"></div></div>
+          <div class="nbhd-card-body">
+            <div class="nbhd-head"><span class="nbhd-name">Copacabana</span><span class="nbhd-price">R$12,000–14,000/m²</span></div>
+            <div class="nbhd-desc">Rio's most iconic 4km beach strip. Best short-term rental liquidity in the city — huge international demand year-round. More affordable per m² than Ipanema, meaning more space for the same money.</div>
+            <div class="nbhd-property">What $400K gets you: A spacious 4-bedroom apartment, ~120–160m². Often partly sea-facing, modernised but not necessarily brand new.</div>
+          </div>
+        </div>
+        <div class="nbhd-card" data-lat="-22.961" data-lng="-43.173" data-img="images/leme.jpg" onclick="pickNbhd(this)">
+          <div class="nbhd-photo" style="background-image:url('images/leme.jpg')"><div class="nbhd-photo-overlay"></div></div>
+          <div class="nbhd-card-body">
+            <div class="nbhd-head"><span class="nbhd-name">Leme</span><span class="nbhd-price">Similar to Copa</span></div>
+            <div class="nbhd-desc">The quieter, more residential end of Copacabana beach — feels local rather than touristy. Has produced the best-performing Airbnb listings in our research: $44.6K/yr at 60% occupancy for a 3BR.</div>
+            <div class="nbhd-property">What $400K gets you: A 3–4 bedroom apartment. Potentially the strongest Airbnb returns of any neighbourhood at this price point.</div>
+          </div>
+        </div>
+        <div class="nbhd-card" data-lat="-22.984" data-lng="-43.206" data-img="images/ipanema.jpg" onclick="pickNbhd(this)">
+          <div class="nbhd-photo" style="background-image:url('images/ipanema.jpg')"><div class="nbhd-photo-overlay"></div></div>
+          <div class="nbhd-card-body">
+            <div class="nbhd-head"><span class="nbhd-name">Ipanema</span><span class="nbhd-price">R$20,000–25,000/m²</span></div>
+            <div class="nbhd-desc">The most upscale beach neighbourhood. Attracts higher-paying guests, premium nightly rates, and a more curated lifestyle — the best restaurants, cafes and bars in the city. Budget stretches less far.</div>
+            <div class="nbhd-property">What $400K gets you: A 3-bedroom apartment, ~80–100m². Less space but a premium address that commands higher nightly rates.</div>
+          </div>
+        </div>
+        <div class="nbhd-card" data-lat="-22.923" data-lng="-43.179" data-img="images/santa-teresa.jpg" onclick="pickNbhd(this)">
+          <div class="nbhd-photo" style="background-image:url('images/santa-teresa.jpg')"><div class="nbhd-photo-overlay"></div></div>
+          <div class="nbhd-card-body">
+            <div class="nbhd-head"><span class="nbhd-name">Santa Teresa</span><span class="nbhd-price">R$11,000/m²</span></div>
+            <div class="nbhd-desc">A bohemian hilltop neighbourhood with colonial architecture, artists' studios and the best bar scene in the city. No beach access, but sweeping views over Rio. The money goes much further here than anywhere in Zona Sul.</div>
+            <div class="nbhd-property">What $400K gets you: A 5–6 bedroom house, ~350–450m², often with garden, terraces and views. The most space for the money by far.</div>
+          </div>
+        </div>
+        <div class="nbhd-card" data-lat="-22.952" data-lng="-43.176" data-img="images/botafogo.jpg" onclick="pickNbhd(this)">
+          <div class="nbhd-photo" style="background-image:url('images/botafogo.jpg')"><div class="nbhd-photo-overlay"></div></div>
+          <div class="nbhd-card-body">
+            <div class="nbhd-head"><span class="nbhd-name">Botafogo / Flamengo</span><span class="nbhd-price">R$13,000–16,000/m²</span></div>
+            <div class="nbhd-desc">A fast-gentrifying neighbourhood between Ipanema and the city centre. Strong tech/startup scene, excellent metro links. Not a swimming beach but great for longer stays — better value and increasingly popular with international visitors.</div>
+            <div class="nbhd-property">What $400K gets you: A large 4-bedroom apartment, ~130–160m², often with higher-end finishes than Copa at a similar price.</div>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="opt" id="nbhd-any" onclick="pickNbhdAny(this)" style="margin-top:8px;">No preference — go with the data</button>
+      <input type="hidden" name="neighbourhood" id="nbhd-val">
+    </div>
+    <div class="divider"></div>
+    <div class="section-label">What matters in the property</div>
+    <div class="q">
+      <div class="q-label">How important are these features to you?</div>
+      <div class="q-hint">Select one column per row.</div>
+      <div class="feat-wrap">
+        <table class="feature-matrix">
+          <thead><tr><th></th><th class="col-dc">Don't care</th><th class="col-wbn">Would be nice</th><th class="col-imp">Important</th><th class="col-nn">Non-negotiable</th></tr></thead>
+          <tbody id="feat-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="section-label">Time &amp; flexibility</div>
+    <div class="q">
+      <div class="q-label">What's the real constraint on how much you'd use it?</div>
+      <div class="q-hint">Most people we've spoken to are limited by time, not money. Be honest — it shapes the credits system.</div>
+      <div class="options" data-name="real_constraint" data-multi="false">
+        <button type="button" class="opt" onclick="pick(this)">Time / PTO — I can't easily take long trips</button>
+        <button type="button" class="opt" onclick="pick(this)">Money — the investment is a stretch</button>
+        <button type="button" class="opt" onclick="pick(this)">Location — tied to a timezone or city</button>
+        <button type="button" class="opt" onclick="pick(this)">Nothing major — I'm flexible on both</button>
+        <button type="button" class="opt" onclick="pick(this)">Not sure</button>
+      </div>
+      <input type="hidden" name="real_constraint">
+    </div>
+    <div class="q">
+      <div class="q-label">How much leave / location flexibility do you have per year?</div>
+      <div class="options" data-name="pto" data-multi="false">
+        <button type="button" class="opt" onclick="pick(this)">Less than 2 weeks</button>
+        <button type="button" class="opt" onclick="pick(this)">2–3 weeks</button>
+        <button type="button" class="opt" onclick="pick(this)">3–5 weeks</button>
+        <button type="button" class="opt" onclick="pick(this)">Unlimited / set my own schedule</button>
+        <button type="button" class="opt" onclick="pick(this)">I can work from anywhere — not a constraint</button>
+        <button type="button" class="opt" onclick="pick(this)">Not sure</button>
+      </div>
+      <input type="hidden" name="pto">
+    </div>
+    <div class="q">
+      <div class="q-label">Would you use this as a workcation base?</div>
+      <div class="options" data-name="workcation" data-multi="false">
+        <button type="button" class="opt" onclick="pick(this)">Yes — that's a big part of the appeal</button>
+        <button type="button" class="opt" onclick="pick(this)">Maybe, for a week or two</button>
+        <button type="button" class="opt" onclick="pick(this)">Unlikely — it's a holiday for me</button>
+        <button type="button" class="opt" onclick="pick(this)">No — I can't work remotely</button>
+        <button type="button" class="opt" onclick="pick(this)">Not sure</button>
+      </div>
+      <input type="hidden" name="workcation">
+    </div>
+    <div class="q">
+      <div class="q-label">What would you need to work effectively from the property?</div>
+      <div class="q-hint">Select all that apply.</div>
+      <div class="checks">
+        <label class="check-row"><input type="checkbox" name="work_needs" value="fast_wifi"><div class="box"></div><span>Fast, reliable WiFi (non-negotiable)</span></label>
+        <label class="check-row"><input type="checkbox" name="work_needs" value="desk"><div class="box"></div><span>Dedicated desk &amp; ergonomic chair</span></label>
+        <label class="check-row"><input type="checkbox" name="work_needs" value="monitor"><div class="box"></div><span>External monitor</span></label>
+        <label class="check-row"><input type="checkbox" name="work_needs" value="call_space"><div class="box"></div><span>Quiet space for calls</span></label>
+        <label class="check-row"><input type="checkbox" name="work_needs" value="meeting_room"><div class="box"></div><span>Space for small team meetings</span></label>
+        <label class="check-row"><input type="checkbox" name="work_needs" value="nothing"><div class="box"></div><span>Nothing specific — I travel light</span></label>
+        <label class="check-row"><input type="checkbox" name="work_needs" value="na"><div class="box"></div><span>Not applicable</span></label>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label">How long would a typical stay be?</div>
+      <div class="options" data-name="stay_length" data-multi="false">
+        <button type="button" class="opt" onclick="pick(this)">Long weekend (3–5 days)</button>
+        <button type="button" class="opt" onclick="pick(this)">1 week</button>
+        <button type="button" class="opt" onclick="pick(this)">2 weeks</button>
+        <button type="button" class="opt" onclick="pick(this)">3–4 weeks</button>
+        <button type="button" class="opt" onclick="pick(this)">1–3 months</button>
+        <button type="button" class="opt" onclick="pick(this)">Not sure</button>
+      </div>
+      <input type="hidden" name="stay_length">
+    </div>
+    <div class="divider"></div>
+    <div class="section-label">How you'd use it</div>
+    <div class="q">
+      <div class="q-label">Realistically, how many nights per year would you use it?</div>
+      <div class="q-hint">Unused credits convert to rental income. You can also buy extra nights from members who aren't travelling that year.</div>
+      <div class="options" data-name="nights" data-multi="false">
+        <button type="button" class="opt" onclick="pick(this)">0–7 nights</button>
+        <button type="button" class="opt" onclick="pick(this)">7–14 nights</button>
+        <button type="button" class="opt" onclick="pick(this)">14–21 nights</button>
+        <button type="button" class="opt" onclick="pick(this)">21–30 nights</button>
+        <button type="button" class="opt" onclick="pick(this)">30+ nights</button>
+        <button type="button" class="opt" onclick="pick(this)">Not sure</button>
+      </div>
+      <input type="hidden" name="nights">
+    </div>
+    <div class="q">
+      <div class="q-label">Would you want to buy extra nights from other members?</div>
+      <div class="options" data-name="buy_days" data-multi="false">
+        <button type="button" class="opt" onclick="pick(this)">Yes — I'd likely want more than my stake covers</button>
+        <button type="button" class="opt" onclick="pick(this)">Maybe, depends on the rate</button>
+        <button type="button" class="opt" onclick="pick(this)">No — my allocation would be enough</button>
+        <button type="button" class="opt" onclick="pick(this)">I'd more likely be selling days than buying</button>
+        <button type="button" class="opt" onclick="pick(this)">Not sure</button>
+      </div>
+      <input type="hidden" name="buy_days">
+    </div>
+    <div class="q">
+      <div class="q-label">Who would you typically bring?</div>
+      <div class="q-hint">Select all that apply.</div>
+      <div class="checks">
+        <label class="check-row"><input type="checkbox" name="usage" value="solo"><div class="box"></div><span>Solo</span></label>
+        <label class="check-row"><input type="checkbox" name="usage" value="partner"><div class="box"></div><span>With a partner</span></label>
+        <label class="check-row"><input type="checkbox" name="usage" value="friends"><div class="box"></div><span>With friends</span></label>
+        <label class="check-row"><input type="checkbox" name="usage" value="family"><div class="box"></div><span>With family</span></label>
+        <label class="check-row"><input type="checkbox" name="usage" value="team"><div class="box"></div><span>Team offsite / company retreat</span></label>
+        <label class="check-row"><input type="checkbox" name="usage" value="community"><div class="box"></div><span>Group trips with other Clubhouse members</span></label>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label">Which time of year would you most want to visit?</div>
+      <div class="q-hint">Select all that apply. Carnival and NYE cost more credits.</div>
+      <div class="checks">
+        <label class="check-row"><input type="checkbox" name="season" value="carnival"><div class="box"></div><span>Carnival (Feb/Mar)</span></label>
+        <label class="check-row"><input type="checkbox" name="season" value="nye"><div class="box"></div><span>New Year's Eve</span></label>
+        <label class="check-row"><input type="checkbox" name="season" value="summer"><div class="box"></div><span>Southern hemisphere summer (Dec–Feb)</span></label>
+        <label class="check-row"><input type="checkbox" name="season" value="shoulder"><div class="box"></div><span>Shoulder season (Apr–Oct) — cheaper credits</span></label>
+        <label class="check-row"><input type="checkbox" name="season" value="flexible"><div class="box"></div><span>Flexible — whatever's available</span></label>
+        <label class="check-row"><input type="checkbox" name="season" value="unsure"><div class="box"></div><span>Not sure yet</span></label>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="section-label">Questions &amp; concerns</div>
+    <div class="q">
+      <div class="q-label">What's your biggest hesitation?</div>
+      <div class="options" data-name="hesitation" data-multi="false">
+        <button type="button" class="opt" onclick="pick(this)">Legal &amp; ownership complexity in Brazil</button>
+        <button type="button" class="opt" onclick="pick(this)">Group dynamics — booking conflicts, trust</button>
+        <button type="button" class="opt" onclick="pick(this)">Currency / BRL–USD risk</button>
+        <button type="button" class="opt" onclick="pick(this)">Liquidity — getting money out</button>
+        <button type="button" class="opt" onclick="pick(this)">Revenue projections being too optimistic</button>
+        <button type="button" class="opt" onclick="pick(this)">No major hesitations</button>
+        <button type="button" class="opt" onclick="pick(this)">Not sure</button>
+      </div>
+      <input type="hidden" name="hesitation">
+    </div>
+    <div class="q">
+      <div class="q-label">Any questions for Oliver?</div>
+      <div class="q-hint">He'll answer each one directly.</div>
+      <textarea name="questions" placeholder="e.g. How does the SPE structure work for UK tax residents? What's the exit process if I want to sell my share?"></textarea>
+    </div>
+    <div class="q">
+      <div class="q-label">Where are you at overall?</div>
+      <div class="options" data-name="commitment" data-multi="false">
+        <button type="button" class="opt" onclick="pick(this)">I'm in — reserve my spot</button>
+        <button type="button" class="opt" onclick="pick(this)">Very interested, a few Qs first</button>
+        <button type="button" class="opt" onclick="pick(this)">Interested but want more detail</button>
+        <button type="button" class="opt" onclick="pick(this)">Watching for now</button>
+        <button type="button" class="opt" onclick="pick(this)">Not sure</button>
+      </div>
+      <input type="hidden" name="commitment">
+    </div>
+    <div class="submit-wrap">
+      <button type="submit" class="submit-btn">Submit</button>
+      <p class="submit-note">Goes directly to Oliver · +1 (720) 584-6358</p>
+    </div>
+  </form>
+</div>
+<div id="success">
+  <div class="header-label" style="font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:24px;">The Rio Clubhouse · 2026</div>
+  <h2>Thanks — you're on the list.</h2>
+  <p style="margin-top:12px;">Oliver will be in touch shortly.<br>Questions: <a href="https://wa.me/17205846358" style="color:rgba(255,255,255,0.4);">+1 (720) 584-6358</a></p>
+</div>
+<script src="js/main.js"></script>
+</body>
+</html>
