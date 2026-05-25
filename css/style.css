@@ -72,14 +72,23 @@ textarea { min-height: 90px; resize: vertical; line-height: 1.6; }
 .nbhd-card { border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: border-color 0.2s, background 0.15s; overflow: hidden; }
 .nbhd-card:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.02); }
 .nbhd-card.active { border-color: #fff; background: rgba(255,255,255,0.03); }
+.nbhd-photos {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+}
 .nbhd-photo {
-  width: 100%; height: 200px;
+  height: 180px;
   background-size: cover; background-position: center;
   position: relative;
 }
 .nbhd-photo-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to bottom, rgba(12,12,12,0.15) 0%, rgba(12,12,12,0.55) 100%);
+  background: linear-gradient(to bottom, rgba(12,12,12,0.1) 0%, rgba(12,12,12,0.5) 100%);
+}
+.nbhd-photo-label {
+  position: absolute; bottom: 8px; left: 10px;
+  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,0.55); font-family: 'Syne', sans-serif; font-weight: 300;
+  pointer-events: none;
 }
 .nbhd-card-body { padding: 16px 14px; }
 .nbhd-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
@@ -121,5 +130,5 @@ input.err { border-bottom-color: rgba(255,80,80,0.6) !important; }
   .page { padding: 60px 20px 100px; }
   .two-col { grid-template-columns: 1fr; gap: 0; }
   .options { gap: 6px; }
-  .nbhd-photo { height: 160px; }
+  .nbhd-photo { height: 130px; }
 }
