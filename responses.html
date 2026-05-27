@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Rio Clubhouse - Responses</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0c0c0c; color: #e8e4dc; font-family: 'Syne', sans-serif; font-weight: 300; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+/* Gate */
+#gate { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 40px 24px; }
+.gate-label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 32px; }
+.gate-title { font-size: 22px; font-weight: 400; color: #fff; margin-bottom: 32px; }
+#pw-wrap { display: flex; gap: 0; border: 1px solid rgba(255,255,255,0.15); }
+#pw-input { background: transparent; border: none; color: #e8e4dc; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 300; padding: 12px 16px; outline: none; width: 220px; }
+#pw-input::placeholder { color: rgba(255,255,255,0.2); }
+#pw-btn { background: transparent; border: none; border-left: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); font-family: 'Syne', sans-serif; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 12px 18px; cursor: pointer; transition: color 0.15s; }
+#pw-btn:hover { color: #fff; }
+#pw-error { margin-top: 14px; font-size: 13px; color: rgba(255,80,80,0.7); display: none; }
+
+/* Dashboard */
+#dashboard { display: none; max-width: 780px; margin: 0 auto; padding: 60px 32px 100px; }
+.dash-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.dash-label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 16px; }
+.dash-title { font-size: 26px; font-weight: 400; color: #fff; margin-bottom: 8px; }
+.dash-meta { font-size: 13px; color: rgba(255,255,255,0.3); }
+.dash-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-bottom: 48px; }
+.stat { border: 1px solid rgba(255,255,255,0.08); padding: 20px; }
+.stat-num { font-size: 28px; font-weight: 400; color: #fff; line-height: 1; margin-bottom: 6px; }
+.stat-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.28); }
+
+/* Response cards */
+.response-card { border: 1px solid rgba(255,255,255,0.08); margin-bottom: 2px; overflow: hidden; }
+.card-head { display: flex; align-items: baseline; justify-content: space-between; padding: 18px 20px; cursor: pointer; transition: background 0.15s; gap: 16px; }
+.card-head:hover { background: rgba(255,255,255,0.02); }
+.card-head-left { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.card-name { font-size: 15px; font-weight: 400; color: #fff; }
+.card-email { font-size: 12px; color: rgba(255,255,255,0.3); }
+.card-head-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.card-investment { font-size: 13px; color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.15); padding: 3px 10px; white-space: nowrap; }
+.card-commitment { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+.card-time { font-size: 11px; color: rgba(255,255,255,0.2); }
+.card-chevron { font-size: 11px; color: rgba(255,255,255,0.2); transition: transform 0.2s; }
+.card-body { display: none; padding: 0 20px 24px; border-top: 1px solid rgba(255,255,255,0.06); }
+.card-body.open { display: block; }
+.section { margin-top: 20px; }
+.section-title { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.22); margin-bottom: 12px; }
+.row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; }
+.field { }
+.field-label { font-size: 11px; color: rgba(255,255,255,0.28); margin-bottom: 2px; }
+.field-value { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.4; }
+.field-value.empty { color: rgba(255,255,255,0.2); font-style: italic; }
+.features-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
+.feat-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
+.feat-row:last-child { border-bottom: none; }
+.feat-name { color: rgba(255,255,255,0.5); }
+.feat-val { color: rgba(255,255,255,0.75); }
+.feat-val.nn { color: #fff; font-weight: 400; }
+.feat-val.imp { color: rgba(255,255,255,0.85); }
+.feat-val.wbn { color: rgba(255,255,255,0.5); }
+.feat-val.dc { color: rgba(255,255,255,0.25); }
+.questions-text { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; background: rgba(255,255,255,0.03); padding: 12px 14px; border-left: 2px solid rgba(255,255,255,0.12); margin-top: 4px; }
+.loading { text-align: center; padding: 60px 0; color: rgba(255,255,255,0.3); font-size: 14px; }
+.no-responses { text-align: center; padding: 80px 0; color: rgba(255,255,255,0.25); font-size: 15px; }
+@media (max-width: 560px) {
+  #dashboard { padding: 40px 20px 80px; }
+  .dash-stats { grid-template-columns: 1fr; }
+  .row-grid { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr; }
+  .card-commitment { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-label">The Rio Clubhouse · 2026</div>
+  <div class="gate-title">Response dashboard</div>
+  <div id="pw-wrap">
+    <input type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')checkPw()">
+    <button id="pw-btn" onclick="checkPw()">Enter</button>
+  </div>
+  <div id="pw-error">Incorrect password</div>
+</div>
+
+<div id="dashboard">
+  <div class="dash-header">
+    <div class="dash-label">The Rio Clubhouse · 2026</div>
+    <div class="dash-title">Response dashboard</div>
+    <div class="dash-meta" id="dash-meta">Loading...</div>
+  </div>
+  <div class="dash-stats" id="dash-stats"></div>
+  <div id="responses-list"><div class="loading">Loading responses...</div></div>
+</div>
+
+<script>
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyQeI5S2MjED2qa6oP1uhVDJLQOktxh89Jwj785SWM0frLu8TT3TTXKIo9XBQb85EE5/exec';
+const PASSWORD = 'oliver';
+
+const FEAT_LABELS = {
+  dc: "Don't care", wbn: 'Would be nice', imp: 'Important', nn: 'Non-negotiable'
+};
+
+const INV_LABELS = {
+  '10000': '$10,000', '15000': '$15,000', '20000': '$20,000', '30000': '$30,000',
+  '40000': '$40,000', '60000': '$60,000', '80000': '$80,000', '100000': '$100,000',
+  'unsure': 'Not sure yet'
+};
+
+function checkPw() {
+  const val = document.getElementById('pw-input').value;
+  if (val === PASSWORD) {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    loadResponses();
+  } else {
+    document.getElementById('pw-error').style.display = 'block';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+function loadResponses() {
+  fetch(APPS_SCRIPT_URL + '?action=getAll')
+    .then(r => r.json())
+    .then(rows => render(rows))
+    .catch(() => {
+      document.getElementById('responses-list').innerHTML = '<div class="no-responses">Could not load responses. Check your connection.</div>';
+    });
+}
+
+function fmtDate(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  if (isNaN(d)) return ts;
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) + ' ' +
+    d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+}
+
+function fmtInv(v) {
+  return INV_LABELS[v] || v || '';
+}
+
+function val(r, k) {
+  const v = r[k];
+  return (v !== null && v !== undefined && v !== '') ? String(v) : null;
+}
+
+function render(rows) {
+  if (!rows || rows.length === 0) {
+    document.getElementById('responses-list').innerHTML = '<div class="no-responses">No responses yet.</div>';
+    document.getElementById('dash-meta').textContent = '0 responses';
+    return;
+  }
+
+  // Stats
+  const total = rows.length;
+  const inv = rows.map(r => r['Investment']).filter(Boolean);
+  const totalInv = inv.reduce((sum, v) => {
+    const n = parseInt(v);
+    return sum + (isNaN(n) ? 0 : n);
+  }, 0);
+  const committed = rows.filter(r => r['Commitment'] && r['Commitment'].toLowerCase().includes("i'm in")).length;
+  const interested = rows.filter(r => r['Commitment'] && (r['Commitment'].toLowerCase().includes("very interested") || r['Commitment'].toLowerCase().includes("interested but"))).length;
+
+  document.getElementById('dash-meta').textContent = total + ' response' + (total !== 1 ? 's' : '') + ', most recent: ' + fmtDate(rows[rows.length - 1]['Timestamp']);
+
+  document.getElementById('dash-stats').innerHTML = `
+    <div class="stat"><div class="stat-num">${total}</div><div class="stat-label">Responses</div></div>
+    <div class="stat"><div class="stat-num">$${totalInv > 0 ? (totalInv/1000).toFixed(0)+'K' : '?'}</div><div class="stat-label">Indicated interest</div></div>
+    <div class="stat"><div class="stat-num">${committed + interested}</div><div class="stat-label">Interested or in</div></div>
+  `;
+
+  const sorted = [...rows].reverse();
+  const list = document.getElementById('responses-list');
+  list.innerHTML = '';
+
+  sorted.forEach((r, idx) => {
+    const name = val(r, 'Name') || 'Unknown';
+    const email = val(r, 'Email') || '';
+    const inv = fmtInv(val(r, 'Investment'));
+    const commitment = val(r, 'Commitment') || '';
+    const ts = fmtDate(val(r, 'Timestamp'));
+
+    const featureKeys = [
+      'Feature: Walking distance to the beach', 'Feature: Sea or beach view', 'Feature: Pool access',
+      'Feature: Large terrace / outdoor space', 'Feature: Fast, reliable WiFi', 'Feature: Dedicated desk / workspace',
+      'Feature: Quiet space for calls', 'Feature: Doorman / portaria', 'Feature: Air conditioning throughout',
+      'Feature: Modern / renovated fit-out', 'Feature: High-end kitchen', 'Feature: Parking',
+      'Feature: No restrictive HOA / rental rules', 'Feature: Lift / elevator access'
+    ];
+
+    const featHTML = featureKeys.map(k => {
+      const v = val(r, k);
+      if (!v) return '';
+      const label = k.replace('Feature: ', '');
+      const cls = v;
+      const display = FEAT_LABELS[v] || v;
+      return `<div class="feat-row"><span class="feat-name">${label}</span><span class="feat-val ${cls}">${display}</span></div>`;
+    }).join('');
+
+    function field(label, key, fullWidth) {
+      const v = val(r, key);
+      return `<div class="field${fullWidth ? ' full' : ''}"><div class="field-label">${label}</div><div class="field-value${v ? '' : ' empty'}">${v || 'Not answered'}</div></div>`;
+    }
+
+    const questions = val(r, 'Questions');
+    const questionsHTML = questions
+      ? `<div class="section"><div class="section-title">Questions for Oliver</div><div class="questions-text">${questions}</div></div>`
+      : '';
+
+    const card = document.createElement('div');
+    card.className = 'response-card';
+    card.innerHTML = `
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-head-left">
+          <div class="card-name">${name}</div>
+          <div class="card-email">${email}</div>
+        </div>
+        <div class="card-head-right">
+          ${inv ? `<div class="card-investment">${inv}</div>` : ''}
+          <div class="card-commitment">${commitment}</div>
+          <div class="card-time">${ts}</div>
+          <div class="card-chevron">&#9660;</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section">
+          <div class="section-title">About</div>
+          <div class="row-grid">
+            ${field('Location', 'Location')}
+            ${field('How they work', 'Work Setup')}
+            ${field('Neighbourhood', 'Neighbourhood')}
+            ${field('Priority', 'Priority')}
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title">Investment</div>
+          <div class="row-grid">
+            ${field('Amount', 'Investment')}
+            ${field('Tier modifier', 'Tier Fairness')}
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title">Usage</div>
+          <div class="row-grid">
+            ${field('Nights per year', 'Nights')}
+            ${field('Typical stay', 'Stay Length')}
+            ${field('Who they bring', 'Usage')}
+            ${field('Time of year', 'Season')}
+            ${field('Real constraint', 'Real Constraint')}
+            ${field('Workcation', 'Workcation')}
+            ${field('Work needs', 'Work Needs')}
+            ${field('Buy extra nights', 'Buy Days')}
+          </div>
+        </div>
+        ${featHTML ? `<div class="section"><div class="section-title">Feature preferences</div><div class="features-grid">${featHTML}</div></div>` : ''}
+        <div class="section">
+          <div class="section-title">Hesitation</div>
+          <div class="row-grid">
+            ${field('Biggest hesitation', 'Hesitation')}
+            ${field('Overall', 'Commitment')}
+          </div>
+        </div>
+        ${questionsHTML}
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function toggleCard(head) {
+  const body = head.nextElementSibling;
+  const chevron = head.querySelector('.card-chevron');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+</script>
+</body>
+</html>
