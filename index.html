@@ -27,10 +27,6 @@
       </div>
     </div>
     <div class="q">
-      <div class="q-label">Where are you based right now?</div>
-      <input type="text" name="location" placeholder="City, Country">
-    </div>
-    <div class="q">
       <div class="q-label">How do you work?</div>
       <div class="options" data-name="work_setup" data-multi="false">
         <button type="button" class="opt" onclick="pick(this)">Fully remote</button>
@@ -46,22 +42,22 @@
     <div class="section-label">Investment</div>
     <div class="q">
       <div class="q-label">How much are you thinking of investing?</div>
-      <div class="q-hint">Based on a ~$400K property. No commitment, just gauging the range. Ownership % is approximate and subject to total raise. Private nights/yr uses a conservative 3× multiplier on your ownership share.</div>
+      <div class="q-hint">Based on a ~$400K property. No commitment, just gauging the range. Ownership % is approximate and subject to total raise.<br>Nights shown as <strong style="color:rgba(255,255,255,0.5)">private / shared</strong> — private means exclusive use of the whole property; shared means your room is reserved alongside other members.</div>
       <div class="inv-bands">
-        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="10000"><div class="inv-band-left"><span class="inv-band-amount">$10,000</span><span class="inv-band-stake">~2.5% · ~7 private nights/yr</span></div><span class="inv-band-tag">Entry</span></label>
-        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="15000"><div class="inv-band-left"><span class="inv-band-amount">$15,000</span><span class="inv-band-stake">~3.75% · ~10 private nights/yr</span></div><span class="inv-band-tag">Entry</span></label>
-        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="20000"><div class="inv-band-left"><span class="inv-band-amount">$20,000</span><span class="inv-band-stake">~5% · ~14 private nights/yr</span></div><span class="inv-band-tag">Standard</span></label>
-        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="30000"><div class="inv-band-left"><span class="inv-band-amount">$30,000</span><span class="inv-band-stake">~7.5% · ~20 private nights/yr</span></div><span class="inv-band-tag">Standard</span></label>
-        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="40000"><div class="inv-band-left"><span class="inv-band-amount">$40,000</span><span class="inv-band-stake">~10% · ~27 private nights/yr</span></div><span class="inv-band-tag">Plus</span></label>
-        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="60000"><div class="inv-band-left"><span class="inv-band-amount">$60,000</span><span class="inv-band-stake">~15% · ~41 private nights/yr</span></div><span class="inv-band-tag">Plus</span></label>
-        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="80000"><div class="inv-band-left"><span class="inv-band-amount">$80,000</span><span class="inv-band-stake">~20% · ~55 private nights/yr</span></div><span class="inv-band-tag">Anchor</span></label>
-        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="100000"><div class="inv-band-left"><span class="inv-band-amount">$100,000</span><span class="inv-band-stake">~25% · ~68 private nights/yr</span></div><span class="inv-band-tag">Anchor</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="10000"><div class="inv-band-left"><span class="inv-band-amount">$10,000</span><span class="inv-band-stake">~2.5% · 7 / 21 nights</span></div><span class="inv-band-tag">Entry</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="15000"><div class="inv-band-left"><span class="inv-band-amount">$15,000</span><span class="inv-band-stake">~3.75% · 10 / 30 nights</span></div><span class="inv-band-tag">Entry</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="20000"><div class="inv-band-left"><span class="inv-band-amount">$20,000</span><span class="inv-band-stake">~5% · 14 / 42 nights</span></div><span class="inv-band-tag">Standard</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="30000"><div class="inv-band-left"><span class="inv-band-amount">$30,000</span><span class="inv-band-stake">~7.5% · 20 / 60 nights</span></div><span class="inv-band-tag">Standard</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="40000"><div class="inv-band-left"><span class="inv-band-amount">$40,000</span><span class="inv-band-stake">~10% · 27 / 81 nights</span></div><span class="inv-band-tag">Plus</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="60000"><div class="inv-band-left"><span class="inv-band-amount">$60,000</span><span class="inv-band-stake">~15% · 41 / 123 nights</span></div><span class="inv-band-tag">Plus</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="80000"><div class="inv-band-left"><span class="inv-band-amount">$80,000</span><span class="inv-band-stake">~20% · 55 / 165 nights</span></div><span class="inv-band-tag">Anchor</span></label>
+        <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="100000"><div class="inv-band-left"><span class="inv-band-amount">$100,000</span><span class="inv-band-stake">~25% · 68 / 204 nights</span></div><span class="inv-band-tag">Anchor</span></label>
         <label class="inv-band" onclick="pickBand(this)"><input type="radio" name="investment" value="unsure"><div class="inv-band-left"><span class="inv-band-amount">Not sure yet</span><span class="inv-band-stake">I want to learn more first</span></div><span class="inv-band-tag"></span></label>
       </div>
     </div>
     <div class="q">
       <div class="q-label">We're considering a small modifier based on investment size. Does this feel fair?</div>
-      <div class="q-hint">Idea: investors under $20K get ~10–20% fewer credits; $60K+ investors get a ~10–15% bonus. Larger commitments carry more risk and help close the deal.</div>
+      <div class="q-hint">Idea: investors under $20K get ~10–20% fewer credits; $60K+ investors get a ~10–15% bonus. The logic: larger commitments carry more financial risk and are often what makes a deal like this actually close. A small modifier aligns reward with that risk without significantly penalising smaller investors.</div>
       <div class="options" data-name="tier_fairness" data-multi="false">
         <button type="button" class="opt" onclick="pick(this)">Yes, fair to reward larger commitment</button>
         <button type="button" class="opt" onclick="pick(this)">Fine, but keep the difference small</button>
@@ -166,10 +162,11 @@
       <div class="q-label">What's the real constraint on how much you'd use it?</div>
       <div class="q-hint">Most people we've spoken to are limited by time, not money. Be honest, it shapes the credits system.</div>
       <div class="options" data-name="real_constraint" data-multi="false">
-        <button type="button" class="opt" onclick="pick(this)">Time / PTO: I can't easily take long trips</button>
+        <button type="button" class="opt" onclick="pick(this)">Time / PTO: I can't easily get away</button>
+        <button type="button" class="opt" onclick="pick(this)">Flights: it's a long trip from where I am</button>
         <button type="button" class="opt" onclick="pick(this)">Money: the investment is a stretch</button>
         <button type="button" class="opt" onclick="pick(this)">Location: tied to a timezone or city</button>
-        <button type="button" class="opt" onclick="pick(this)">Nothing major, I'm flexible on both</button>
+        <button type="button" class="opt" onclick="pick(this)">Nothing major, I'm flexible</button>
         <button type="button" class="opt" onclick="pick(this)">Not sure</button>
       </div>
       <input type="hidden" name="real_constraint">
@@ -201,9 +198,7 @@
       <div class="q-label">What would you need to work effectively from the property?</div>
       <div class="q-hint">Select all that apply.</div>
       <div class="checks">
-        <label class="check-row"><input type="checkbox" name="work_needs" value="fast_wifi"><div class="box"></div><span>Fast, reliable WiFi (non-negotiable)</span></label>
         <label class="check-row"><input type="checkbox" name="work_needs" value="desk"><div class="box"></div><span>Dedicated desk &amp; ergonomic chair</span></label>
-        <label class="check-row"><input type="checkbox" name="work_needs" value="monitor"><div class="box"></div><span>External monitor</span></label>
         <label class="check-row"><input type="checkbox" name="work_needs" value="call_space"><div class="box"></div><span>Quiet space for calls</span></label>
         <label class="check-row"><input type="checkbox" name="work_needs" value="meeting_room"><div class="box"></div><span>Space for small team meetings</span></label>
         <label class="check-row"><input type="checkbox" name="work_needs" value="nothing"><div class="box"></div><span>Nothing specific, I travel light</span></label>
